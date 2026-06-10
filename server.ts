@@ -107,6 +107,7 @@ import { contractExploitListener } from './routes/web3Wallet'
 import { updateUserProfile } from './routes/updateUserProfile'
 import { getVideo, promotionVideo } from './routes/videoHandler'
 import { likeProductReviews } from './routes/likeProductReviews'
+import { productDetails } from './routes/productDetails'
 import { repeatNotification } from './routes/repeatNotification'
 import { serveQuarantineFiles } from './routes/quarantineServer'
 import { showProductReviews } from './routes/showProductReviews'
@@ -598,6 +599,7 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   app.get('/rest/user/whoami', security.updateAuthenticatedUsers(), retrieveLoggedInUser())
   app.get('/rest/user/authentication-details', authenticatedUsers())
   app.get('/rest/products/search', searchProducts())
+  app.get('/rest/products/:id/details', productDetails())
   app.get('/rest/basket/:id', retrieveBasket())
   app.post('/rest/basket/:id/checkout', placeOrder())
   app.put('/rest/basket/:id/coupon/:coupon', applyCoupon())
