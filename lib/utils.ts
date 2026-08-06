@@ -9,7 +9,6 @@ import fs from 'node:fs'
 import logger from './logger'
 import config from 'config'
 import jsSHA from 'jssha'
-import download from 'download'
 import crypto from 'node:crypto'
 import clarinet from 'clarinet'
 import type { Challenge } from 'data/types'
@@ -120,8 +119,12 @@ export const extractFilename = (url: string) => {
 
 export const downloadToFile = async (url: string, dest: string) => {
   try {
-    const data = await download(url)
-    fs.writeFileSync(dest, data)
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+    }
+    const buffer = Buffer.from(await response.arrayBuffer())
+    fs.writeFileSync(dest, buffer)
   } catch (err) {
     logger.warn('Failed to download ' + url + ' (' + getErrorMessage(err) + ')')
   }
