@@ -11,7 +11,6 @@ import jwt, { type JwtPayload, type VerifyErrors } from 'jsonwebtoken'
 import * as challengeUtils from '../lib/challengeUtils'
 import logger from '../lib/logger'
 import config from 'config'
-import download from 'download'
 import * as utils from '../lib/utils'
 import { isString } from 'lodash'
 import Bot from 'juicy-chat-bot'
@@ -33,7 +32,8 @@ export async function initializeChatbot () {
   initializationPromise = (async () => {
     if (utils.isUrl(trainingFile)) {
       const file = utils.extractFilename(trainingFile)
-      const data = await download(trainingFile)
+      const response = await fetch(trainingFile)
+      const data = Buffer.from(await response.arrayBuffer())
       await fs.writeFile('data/chatbot/' + file, data)
     }
 
